@@ -3,11 +3,15 @@ package main
 import (
 	"github.com/mike-kirpa/just-todo"
 	"github.com/mike-kirpa/just-todo/pkg/handler"
+	"github.com/mike-kirpa/just-todo/pkg/repository"
+	"github.com/mike-kirpa/just-todo/pkg/service"
 	"log"
 )
 
 func main() {
-	handlers := new(handler.Handler)
+	repos := repository.NewRepository()
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(todo.Server)
 	if err := srv.Run("8080", handlers.InitRoutes()); err != nil {
